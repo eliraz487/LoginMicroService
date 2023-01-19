@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.halper.ConnectionSql;
 import com.example.demo.vo.TryLoginEntityVO;
 
 import java.sql.*;
@@ -13,8 +14,7 @@ public class LoginService {
         String error = "";
         Connection conn = null;
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=Login", "sa", "1234");
+            conn = ConnectionSql.getConntion();
             CallableStatement cStmt = conn.prepareCall("{?=call loginTry(?, ?, ?, ?, ?,?)}");
             cStmt.registerOutParameter(1, java.sql.Types.INTEGER);
             cStmt.setString(2, tryLoginEntityDTO.getIp());
