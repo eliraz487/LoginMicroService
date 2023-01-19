@@ -1,9 +1,11 @@
 package com.example.demo.service;
 
+import com.example.demo.halper.ConnectionSql;
 import com.example.demo.vo.UsersEntityUpdateVO;
 import com.example.demo.vo.UsersEntityVO;
 
 import java.sql.*;
+import java.util.Objects;
 
 public class UsersService {
 
@@ -11,12 +13,11 @@ public class UsersService {
     }
 
     public String createUser(UsersEntityVO usersEntityVO) {
-        Connection conn = null;
-        CallableStatement cStmt = null;
+        Connection conn;
+        CallableStatement cStmt;
         String result;
-        String error = "";
         try {
-            conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=Login", "sa", "1234");
+             conn = ConnectionSql.getConntion();
             cStmt = conn.prepareCall("{?=call Adduser(?, ?, ?, ?,?)}");
             cStmt.registerOutParameter(1, java.sql.Types.INTEGER);
             cStmt.setString(2, usersEntityVO.getUserName());
@@ -28,10 +29,10 @@ public class UsersService {
             result = cStmt.getString(6);
             cStmt.close();
             conn.close();
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             result = e.toString();
         }
-        if(result != ""){
+        if(!Objects.equals(result, "")){
             return result;
         }
         return "success ";
@@ -41,15 +42,14 @@ public class UsersService {
         LoginService loginService = new LoginService();
 
         String messege = loginService.loginTry(usersEntityUpdateVO.getTryLogin());
-        if (messege != "successes") {
+        if (!Objects.equals(messege, "successes")) {
             return usersEntityUpdateVO.getUserName();
         }
 
-        Connection conn = null;
+        Connection conn;
         String result ;
-        String error = "";
         try {
-            conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=Login", "sa", "1234");
+           conn = ConnectionSql.getConntion();
             CallableStatement cStmt = conn.prepareCall("{?=call EditUser(?, ?,?)}");
             cStmt.registerOutParameter(1, java.sql.Types.INTEGER);
             cStmt.setString(2, usersEntityUpdateVO.getTryLogin().getUserName());
@@ -59,7 +59,7 @@ public class UsersService {
             result = cStmt.getString(4);
             cStmt.close();
             conn.close();
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             result=e.toString();
         }
         if(result != null){
@@ -72,14 +72,14 @@ public class UsersService {
         LoginService loginService = new LoginService();
 
         String messege = loginService.loginTry(usersEntityUpdateVO.getTryLogin());
-        if (messege != "successes") {
+        if (!Objects.equals(messege, "successes")) {
             return messege;
         }
 
-        Connection conn = null;
+        Connection conn;
         String result ;
         try {
-            conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=Login", "sa", "1234");
+           conn = ConnectionSql.getConntion();
             CallableStatement cStmt = conn.prepareCall("{?=call AddPassword(?, ?,?)}");
             cStmt.registerOutParameter(1, java.sql.Types.INTEGER);
             cStmt.setString(2, usersEntityUpdateVO.getTryLogin().getUserName());
@@ -89,7 +89,7 @@ public class UsersService {
             result = cStmt.getString(4);
             cStmt.close();
             conn.close();
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             result =e.toString();
         }
         if(result != null){
