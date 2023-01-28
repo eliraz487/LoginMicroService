@@ -15,7 +15,11 @@ public class LoginController {
     @GetMapping("/tryLogin")
     public String loginTry(@RequestBody TryLoginEntityVO tryLoginEntityDTO) {
         LoginService login = new LoginService();
-        return login.loginTry(tryLoginEntityDTO);
+        try {
+            return String.valueOf(login.loginTry(tryLoginEntityDTO));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

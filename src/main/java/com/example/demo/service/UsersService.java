@@ -12,6 +12,7 @@ public class UsersService {
     public UsersService() {
     }
 
+
     public String createUser(UsersEntityVO usersEntityVO) {
         Connection conn;
         CallableStatement cStmt;
@@ -40,14 +41,18 @@ public class UsersService {
 
     public String editUser(UsersEntityUpdateVO usersEntityUpdateVO) {
         LoginService loginService = new LoginService();
+        String result ;
 
-        String messege = loginService.loginTry(usersEntityUpdateVO.getTryLogin());
-        if (!Objects.equals(messege, "successes")) {
-            return usersEntityUpdateVO.getUserName();
+        try {
+            int messege = loginService.loginTry(usersEntityUpdateVO.getTryLogin());
+        } catch (Exception e) {
+            result =e.toString();
+            return result;
         }
 
+
         Connection conn;
-        String result ;
+
         try {
            conn = ConnectionSql.getConntion();
             CallableStatement cStmt = conn.prepareCall("{?=call EditUser(?, ?,?)}");
@@ -61,6 +66,7 @@ public class UsersService {
             conn.close();
         } catch (SQLException | ClassNotFoundException e) {
             result=e.toString();
+            return result;
         }
         if(result != null){
             return result;
@@ -70,14 +76,17 @@ public class UsersService {
 
     public String editPassword(UsersEntityUpdateVO usersEntityUpdateVO) {
         LoginService loginService = new LoginService();
-
-        String messege = loginService.loginTry(usersEntityUpdateVO.getTryLogin());
-        if (!Objects.equals(messege, "successes")) {
-            return messege;
+        String result ;
+        try {
+            int messege = loginService.loginTry(usersEntityUpdateVO.getTryLogin());
+        } catch (Exception e) {
+            result=e.toString();
+            return result;
         }
 
+
         Connection conn;
-        String result ;
+
         try {
            conn = ConnectionSql.getConntion();
             CallableStatement cStmt = conn.prepareCall("{?=call AddPassword(?, ?,?)}");
@@ -91,6 +100,7 @@ public class UsersService {
             conn.close();
         } catch (SQLException | ClassNotFoundException e) {
             result =e.toString();
+            return result;
         }
         if(result != null){
             return result;

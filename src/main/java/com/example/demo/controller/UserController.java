@@ -17,12 +17,12 @@ public class UserController {
 
     @PutMapping("/changeusername")
     public String editUser(@RequestBody UsersEntityUpdateVO userupdate) {
-
         UsersService usersService = new UsersService();
         return usersService.editUser(userupdate);
     }
+
     @PutMapping("/changepassword")
-    public String changePassword(@RequestBody UsersEntityUpdateVO userupdate){
+    public String changePassword(@RequestBody UsersEntityUpdateVO userupdate) {
         UsersService usersService = new UsersService();
         return usersService.editPassword(userupdate);
     }
