@@ -5,6 +5,7 @@ import com.example.demo.vo.TryLoginEntityVO;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Types;
 
 public class LoginService {
@@ -18,7 +19,7 @@ public class LoginService {
      * @return the user id
      * @throws Exception a error message
      */
-    public int loginTry(TryLoginEntityVO tryLoginEntityDTO) throws Exception {
+    public int loginTry(TryLoginEntityVO tryLoginEntityDTO) throws SQLException, ClassNotFoundException, IllegalAccessException {
         String error = "";
         int id = 0;
         Connection conn = null;
