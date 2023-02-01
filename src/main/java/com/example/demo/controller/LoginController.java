@@ -2,17 +2,14 @@ package com.example.demo.controller;
 
 import com.example.demo.service.LoginService;
 import com.example.demo.vo.TryLoginEntityVO;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/Login")
 public class LoginController {
 
 
-    @GetMapping("/tryLogin")
+    @PostMapping("/tryLogin")
     public String loginTry(@RequestBody TryLoginEntityVO tryLoginEntityDTO) {
         LoginService login = new LoginService();
         try {
